@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Lumos Studio — Web + Brand + Visual Production</title>
+  <title>Lumos Studio — B2B Digital Presence & Visual Production</title>
 
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -57,7 +57,7 @@
     a{color:inherit}
     .wrap{max-width:var(--max); margin:0 auto; padding: 0 20px;}
 
-    /* NAVBAR (kept as-is) */
+    /* NAVBAR (kept as-is, only content cleaned slightly) */
     .topbar{
       position:sticky; top:0; z-index:50;
       backdrop-filter: blur(10px);
@@ -119,10 +119,13 @@
     .btn.primary:hover{transform: translateY(-2px) scale(1.01);}
 
     /* HERO */
-    header.hero{padding: 54px 0 34px; position:relative;}
+    header.hero{
+      padding: 54px 0 34px;
+      position:relative;
+    }
     .heroGrid{
       display:grid;
-      grid-template-columns: 1.10fr .90fr;
+      grid-template-columns: 1.15fr .85fr;
       gap: 28px;
       align-items: start;
     }
@@ -157,7 +160,11 @@
       color: var(--muted);
       margin: 0 0 18px;
     }
-    .heroCtas{display:flex; gap:12px; align-items:center; flex-wrap:wrap; margin-top: 18px;}
+    /* fewer buttons: one primary in hero */
+    .heroCtas{
+      display:flex; gap:12px; align-items:center; flex-wrap:wrap;
+      margin-top: 18px;
+    }
     .heroMeta{
       display:flex; gap:12px; flex-wrap:wrap;
       margin-top: 18px;
@@ -172,7 +179,7 @@
       border-radius: 999px;
     }
 
-    /* HERO 3D PANEL */
+    /* panel */
     .panel{
       border-radius: var(--radius2);
       background: linear-gradient(135deg, rgba(255,255,255,.38), rgba(255,255,255,.18));
@@ -180,65 +187,20 @@
       box-shadow: var(--shadow);
       overflow:hidden;
       position:relative;
-      min-height: 360px;
+      min-height: 340px;
+      will-change: transform;
     }
-    .panelInner{
-      position:relative;
-      padding: 18px;
-      height: 100%;
-      display:flex;
-      flex-direction:column;
-      gap: 14px;
-    }
+    .panelInner{padding: 22px; display:flex; flex-direction:column; gap: 14px;}
     .panelTop{
       display:flex; align-items:center; justify-content:space-between;
       gap: 12px;
       color: rgba(12,12,12,.70);
       font-weight:700;
       font-size: 13px;
-      z-index:2;
     }
     .panelMark{display:flex; align-items:center; gap:10px;}
     .panelMark img{width:34px; height:34px; object-fit:contain;}
-    .hint{
-      font-weight:700;
-      color: rgba(12,12,12,.60);
-      padding: 8px 10px;
-      border-radius: 999px;
-      border: 1px solid var(--soft);
-      background: rgba(233,225,219,.26);
-      width: fit-content;
-      z-index:2;
-    }
 
-    /* Canvas region */
-    .stage{
-      position:relative;
-      border-radius: 18px;
-      border: 1px solid var(--soft);
-      background: rgba(233,225,219,.35);
-      overflow:hidden;
-      flex: 1 1 auto;
-      min-height: 260px;
-    }
-    canvas#prismCanvas{
-      position:absolute; inset:0;
-      width:100%; height:100%;
-      display:block;
-      cursor: grab;
-      touch-action: none;
-    }
-    canvas#prismCanvas:active{cursor: grabbing;}
-
-    /* faint overlay vignette */
-    .vignette{
-      pointer-events:none;
-      position:absolute; inset:0;
-      background: radial-gradient(circle at 50% 40%, rgba(0,0,0,0) 0 55%, rgba(0,0,0,.06) 85%, rgba(0,0,0,.10) 100%);
-      mix-blend-mode: multiply;
-    }
-
-    /* Signal (kept, but fewer CTAs overall) */
     .signal{
       border-radius: 18px;
       padding: 14px;
@@ -253,7 +215,7 @@
       grid-template-columns: repeat(7, 1fr);
       gap: 8px;
       align-items:end;
-      height: 70px;
+      height: 92px;
     }
     .bar{
       height: 20%;
@@ -272,7 +234,7 @@
     .bar:nth-child(6){--sy:.98}
     .bar:nth-child(7){--sy:.66}
 
-    /* Sections */
+    /* sections */
     section{padding: 42px 0;}
     .sectionHead{
       display:flex; align-items:flex-end; justify-content:space-between;
@@ -305,7 +267,10 @@
       border: 1px solid var(--soft2);
       box-shadow: var(--shadow2);
       padding: 18px;
+      position:relative;
+      overflow:hidden;
 
+      /* reveal (only on scroll) */
       opacity: 0;
       transform: translateY(14px);
       transition: opacity 800ms ease, transform 800ms cubic-bezier(.2,.8,.2,1);
@@ -322,6 +287,7 @@
       font-size: 13px;
     }
 
+    /* problems */
     .problems{
       display:grid;
       grid-template-columns: 1fr 1fr;
@@ -337,6 +303,7 @@
       gap: 12px;
       align-items:flex-start;
 
+      /* reveal */
       opacity: 0;
       transform: translateY(14px);
       transition: opacity 800ms ease, transform 800ms cubic-bezier(.2,.8,.2,1);
@@ -354,7 +321,7 @@
     .problem strong{display:block; font-weight:900; letter-spacing:-0.02em}
     .problem span{display:block; color: var(--muted); margin-top: 4px; font-weight: 600; line-height:1.45}
 
-    /* Process: fading reveal per step */
+    /* STRUCTURED PROCESS: fade animation per step on scroll */
     .timeline{
       border-radius: var(--radius2);
       border: 1px solid var(--soft2);
@@ -371,18 +338,23 @@
 
       opacity: 0;
       transform: translateY(10px);
-      transition: opacity 950ms ease, transform 950ms cubic-bezier(.2,.8,.2,1);
+      transition: opacity 900ms ease, transform 900ms cubic-bezier(.2,.8,.2,1);
     }
     .step:first-child{border-top:none}
     .step.in{
       opacity: 1;
       transform: translateY(0);
-      animation: fadeGlow 950ms ease both;
+    }
+
+    /* fading highlight while revealing */
+    .step.in{
+      animation: fadeGlow 900ms ease both;
     }
     @keyframes fadeGlow{
       0%{filter: blur(.2px); background: rgba(255,255,255,.16)}
       100%{filter: blur(0); background: rgba(255,255,255,0)}
     }
+
     .num{
       width:44px; height:44px;
       border-radius: 16px;
@@ -394,7 +366,7 @@
     .step h4{margin:0 0 6px; font-size: 15px; font-weight:900}
     .step p{margin:0; color: var(--muted); font-weight:600; line-height:1.55; font-size: 14px}
 
-    /* CTA (minimal buttons) */
+    /* CTA */
     .cta{
       border-radius: var(--radius2);
       border: 1px solid var(--soft2);
@@ -402,7 +374,9 @@
       color: var(--bg);
       box-shadow: 0 22px 60px rgba(0,0,0,.20);
       padding: 26px;
+      overflow:hidden;
 
+      /* reveal */
       opacity: 0;
       transform: translateY(14px);
       transition: opacity 900ms ease, transform 900ms cubic-bezier(.2,.8,.2,1);
@@ -428,6 +402,7 @@
       color: var(--ink);
       border-color: rgba(233,225,219,.30);
     }
+    .cta .btn.primary:hover{transform: translateY(-2px);}
 
     .footer{
       padding: 18px 0 42px;
@@ -450,16 +425,13 @@
       .grid3{grid-template-columns: 1fr;}
       .problems{grid-template-columns: 1fr;}
       .navlinks{display:none;}
-      .panel{min-height: 420px;}
-      .stage{min-height: 300px;}
     }
   </style>
 </head>
-
 <body>
   <div class="grain"></div>
 
-  <!-- Topbar -->
+  <!-- Topbar (unchanged layout) -->
   <div class="topbar">
     <div class="wrap">
       <div class="nav">
@@ -497,11 +469,11 @@
           </h1>
 
           <p class="sub reveal" style="transition-delay:140ms">
-            We help B2B businesses present themselves professionally through structured websites,
-            clear brand systems, and corporate-safe visual content.
+            Lumos Studio helps office-based businesses and manufacturing brands present themselves
+            professionally through structured websites, clear brand systems, and corporate-safe visual content.
           </p>
 
-          <!-- fewer buttons: one hero CTA -->
+          <!-- fewer buttons -->
           <div class="heroCtas reveal" style="transition-delay:200ms">
             <a class="btn primary" href="#contact">Discuss your project</a>
           </div>
@@ -513,25 +485,17 @@
           </div>
         </div>
 
-        <!-- HERO 3D -->
         <div class="panel reveal" style="transition-delay:120ms">
           <div class="panelInner">
             <div class="panelTop">
               <div class="panelMark">
                 <img src="logo.jpeg" alt="" />
-                <span>Interactive prism</span>
+                <span>Credibility signal</span>
               </div>
-              <span>WebGL (Three.js)</span>
+              <span>Scroll-animated</span>
             </div>
 
-            <div class="hint">Drag to rotate • Scroll stays smooth</div>
-
-            <div class="stage observe" id="stage">
-              <canvas id="prismCanvas" aria-label="Interactive 3D prism"></canvas>
-              <div class="vignette"></div>
-            </div>
-
-            <div class="signal observe" style="margin-top:2px">
+            <div class="signal observe">
               <h3>Clarity → Confidence → Conversion</h3>
               <div class="bars">
                 <div class="bar"></div><div class="bar"></div><div class="bar"></div>
@@ -540,6 +504,14 @@
               </div>
             </div>
 
+            <div class="signal" style="margin-top:6px">
+              <h3 style="margin-bottom:6px">What we optimize for</h3>
+              <div style="display:flex; gap:10px; flex-wrap:wrap; font-weight:700; color:rgba(12,12,12,.75); font-size:13px">
+                <span class="pill">Sales conversations</span>
+                <span class="pill">Investor confidence</span>
+                <span class="pill">Long-term trust</span>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -558,7 +530,7 @@
       </div>
 
       <div class="problems">
-        <div class="problem observe-problem">
+        <div class="problem observe-reveal">
           <div class="tick">✓</div>
           <div>
             <strong>Outdated digital presence</strong>
@@ -566,7 +538,7 @@
           </div>
         </div>
 
-        <div class="problem observe-problem">
+        <div class="problem observe-reveal">
           <div class="tick">✓</div>
           <div>
             <strong>Weak brand credibility</strong>
@@ -574,7 +546,7 @@
           </div>
         </div>
 
-        <div class="problem observe-problem">
+        <div class="problem observe-reveal">
           <div class="tick">✓</div>
           <div>
             <strong>Unstructured visual assets</strong>
@@ -582,7 +554,7 @@
           </div>
         </div>
 
-        <div class="problem observe-problem">
+        <div class="problem observe-reveal">
           <div class="tick">✓</div>
           <div>
             <strong>Low trust in online communication</strong>
@@ -628,19 +600,19 @@
 
         <div class="card observe-card">
           <h3>Corporate Photo & Video</h3>
-          <p>Professional visuals built for trust in B2B contexts.</p>
+          <p>Professional visuals built for trust: office walkthroughs, process documentation, audit-ready imagery.</p>
           <ul class="bullets">
             <li>Office walkthrough videos</li>
             <li>Process documentation</li>
             <li>Leadership / team profiles</li>
-            <li>Corporate-safe edits</li>
+            <li>Compliance-ready assets</li>
           </ul>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Process -->
+  <!-- Structured Process (factory section removed) -->
   <section id="process">
     <div class="wrap">
       <div class="sectionHead">
@@ -692,7 +664,7 @@
           If you’re looking to improve your digital presence or corporate visual content, we’d be happy to discuss your requirements.
         </p>
 
-        <!-- minimal buttons -->
+        <!-- fewer buttons: one primary action + one secondary (optional) -->
         <div class="heroCtas">
           <a class="btn primary" href="mailto:you@lumosstudio.com">Email us</a>
           <a class="btn" href="https://www.lumosstudio.com" target="_blank" rel="noreferrer">Visit website</a>
@@ -701,195 +673,74 @@
 
       <div class="footer">
         <span>© <span id="year"></span> Lumos Studio</span>
-        <span>Eggshell background • Bold type • Scroll reveal • WebGL prism</span>
+        <span>Eggshell background • Bold type • Scroll reveal</span>
       </div>
     </div>
   </section>
 
-  <!-- Three.js (ES modules) -->
-  <script type="module">
-    import * as THREE from "https://unpkg.com/three@0.160.0/build/three.module.js";
-    import { OrbitControls } from "https://unpkg.com/three@0.160.0/examples/jsm/controls/OrbitControls.js";
-
-    // ---------- Scroll reveal (only show when scrolled) ----------
+  <script>
+    // Year
     document.getElementById('year').textContent = new Date().getFullYear();
 
+    // IntersectionObserver: reveal ONLY when scrolled into view
     const io = new IntersectionObserver((entries) => {
       entries.forEach((e) => {
-        if (!e.isIntersecting) return;
+        if (e.isIntersecting) {
+          // Generic "reveal" blocks
+          if (e.target.classList.contains('reveal')) e.target.classList.add('in');
 
-        if (e.target.classList.contains('reveal')) e.target.classList.add('in');
-        if (e.target.classList.contains('observe-problem')) e.target.classList.add('in');
-        if (e.target.classList.contains('observe-card')) e.target.classList.add('in');
-        if (e.target.classList.contains('observe-step')) e.target.classList.add('in');
-        if (e.target.classList.contains('observe-cta')) e.target.classList.add('in');
+          // Problems
+          if (e.target.classList.contains('observe-reveal')) e.target.classList.add('in');
 
-        // bars + stage "in-view"
-        if (e.target.classList.contains('observe')) e.target.classList.add('in-view');
+          // Cards
+          if (e.target.classList.contains('observe-card')) e.target.classList.add('in');
 
-        io.unobserve(e.target); // animate once
+          // Process steps (fade + appear)
+          if (e.target.classList.contains('observe-step')) e.target.classList.add('in');
+
+          // CTA
+          if (e.target.classList.contains('observe-cta')) e.target.classList.add('in');
+
+          // Signal viz bars
+          if (e.target.classList.contains('observe')) e.target.classList.add('in-view');
+
+          // Only animate once
+          io.unobserve(e.target);
+        }
       });
     }, { threshold: 0.18 });
 
-    document.querySelectorAll('.reveal, .observe, .observe-problem, .observe-card, .observe-step, .observe-cta')
+    // observe all revealables
+    document.querySelectorAll('.reveal, .observe, .observe-card, .observe-step, .observe-reveal, .observe-cta')
       .forEach(el => io.observe(el));
 
-    // Stagger nice fades
-    document.querySelectorAll('.observe-problem').forEach((el, i) => el.style.transitionDelay = (i * 70) + 'ms');
-    document.querySelectorAll('.observe-card').forEach((el, i) => el.style.transitionDelay = (i * 90) + 'ms');
-    document.querySelectorAll('.observe-step').forEach((el, i) => el.style.transitionDelay = (i * 110) + 'ms');
-
-    // ---------- WebGL Prism ----------
-    const canvas = document.getElementById("prismCanvas");
-    const stage = document.getElementById("stage");
-
-    const renderer = new THREE.WebGLRenderer({
-      canvas,
-      antialias: true,
-      alpha: true,               // transparent so eggshell shows through
-      powerPreference: "high-performance"
+    // Stagger reveal delays (so each element fades in nicely)
+    document.querySelectorAll('.observe-reveal').forEach((el, i) => {
+      el.style.transitionDelay = (i * 70) + 'ms';
+    });
+    document.querySelectorAll('.observe-card').forEach((el, i) => {
+      el.style.transitionDelay = (i * 90) + 'ms';
+    });
+    document.querySelectorAll('.observe-step').forEach((el, i) => {
+      el.style.transitionDelay = (i * 110) + 'ms';
     });
 
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
-    renderer.setClearColor(0x000000, 0); // transparent
+    // subtle parallax on hero panel
+    const panel = document.querySelector('.panel');
+    window.addEventListener('mousemove', (ev) => {
+      if (!panel) return;
+      const r = panel.getBoundingClientRect();
+      const cx = r.left + r.width/2;
+      const cy = r.top + r.height/2;
+      const dx = (ev.clientX - cx) / r.width;
+      const dy = (ev.clientY - cy) / r.height;
+      panel.style.transform = `translate3d(${dx * 6}px, ${dy * 6}px, 0)`;
+    }, { passive:true });
 
-    const scene = new THREE.Scene();
-
-    // Camera
-    const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 100);
-    camera.position.set(0.0, 0.15, 3.2);
-
-    // Lights (soft, studio-like)
-    const key = new THREE.DirectionalLight(0xffffff, 1.15);
-    key.position.set(2.6, 2.4, 3.2);
-    scene.add(key);
-
-    const fill = new THREE.DirectionalLight(0xffffff, 0.55);
-    fill.position.set(-2.8, 1.2, 1.8);
-    scene.add(fill);
-
-    const rim = new THREE.DirectionalLight(0xffffff, 0.65);
-    rim.position.set(0.0, -2.0, -2.5);
-    scene.add(rim);
-
-    scene.add(new THREE.AmbientLight(0xffffff, 0.35));
-
-    // Prism geometry (triangular prism via extruded triangle)
-    const tri = new THREE.Shape();
-    tri.moveTo(0, 0.62);
-    tri.lineTo(-0.55, -0.42);
-    tri.lineTo(0.55, -0.42);
-    tri.lineTo(0, 0.62);
-
-    const prismGeo = new THREE.ExtrudeGeometry(tri, {
-      depth: 0.9,
-      bevelEnabled: true,
-      bevelThickness: 0.03,
-      bevelSize: 0.03,
-      bevelSegments: 2,
-      curveSegments: 6
-    });
-    prismGeo.center();
-
-    // Material: dark glossy, minimal
-    const prismMat = new THREE.MeshPhysicalMaterial({
-      color: 0x101010,
-      metalness: 0.55,
-      roughness: 0.28,
-      clearcoat: 0.7,
-      clearcoatRoughness: 0.25,
-      reflectivity: 0.35
-    });
-
-    const prism = new THREE.Mesh(prismGeo, prismMat);
-    scene.add(prism);
-
-    // Edge lines for crisp silhouette
-    const edges = new THREE.EdgesGeometry(prismGeo, 20);
-    const edgeLines = new THREE.LineSegments(
-      edges,
-      new THREE.LineBasicMaterial({ color: 0x0c0c0c, transparent: true, opacity: 0.55 })
-    );
-    scene.add(edgeLines);
-
-    // Slight tilt for nicer starting composition
-    prism.rotation.x = 0.35;
-    prism.rotation.y = -0.6;
-    edgeLines.rotation.copy(prism.rotation);
-
-    // Orbit controls (interactive)
-    const controls = new OrbitControls(camera, renderer.domElement);
-    controls.enableDamping = true;
-    controls.dampingFactor = 0.06;
-    controls.enablePan = false;
-    controls.enableZoom = false;          // keep it clean and stable
-    controls.rotateSpeed = 0.65;
-    controls.autoRotate = true;
-    controls.autoRotateSpeed = 0.75;
-
-    // Limits to keep it elegant
-    controls.minPolarAngle = Math.PI * 0.20;
-    controls.maxPolarAngle = Math.PI * 0.80;
-
-    // Resize handling
-    function resize() {
-      const r = stage.getBoundingClientRect();
-      const w = Math.max(1, Math.floor(r.width));
-      const h = Math.max(1, Math.floor(r.height));
-      renderer.setSize(w, h, false);
-      camera.aspect = w / h;
-      camera.updateProjectionMatrix();
-    }
-    resize();
-    window.addEventListener("resize", resize, { passive: true });
-
-    // Pause rendering when tab not visible (performance)
-    let running = true;
-    document.addEventListener("visibilitychange", () => {
-      running = !document.hidden;
-    });
-
-    // Optional: reduce motion preference
-    const reduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (reduceMotion) controls.autoRotate = false;
-
-    // Animate
-    const clock = new THREE.Clock();
-    function tick(){
-      if (running) {
-        const t = clock.getElapsedTime();
-
-        // subtle “breathing” motion (very light)
-        prism.position.y = Math.sin(t * 0.7) * 0.03;
-        edgeLines.position.y = prism.position.y;
-
-        controls.update();
-
-        // keep edges aligned with prism (since controls rotate camera)
-        // (prism rotates only from initial rotation + optional micro rotation)
-        prism.rotation.z += 0.0006;
-        edgeLines.rotation.copy(prism.rotation);
-
-        renderer.render(scene, camera);
-      }
-      requestAnimationFrame(tick);
-    }
-    tick();
-
-    // Touch: make sure drag feels responsive
-    renderer.domElement.addEventListener("pointerdown", () => {
-      // temporarily slow auto-rotate during interaction
-      controls.autoRotateSpeed = 0.25;
-    }, { passive: true });
-
-    renderer.domElement.addEventListener("pointerup", () => {
-      controls.autoRotateSpeed = 0.75;
-    }, { passive: true });
-
-    renderer.domElement.addEventListener("pointerleave", () => {
-      controls.autoRotateSpeed = 0.75;
-    }, { passive: true });
+    window.addEventListener('mouseleave', () => {
+      if (!panel) return;
+      panel.style.transform = 'translate3d(0,0,0)';
+    }, { passive:true });
   </script>
 </body>
 </html>
-
