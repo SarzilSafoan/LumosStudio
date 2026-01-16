@@ -1,0 +1,342 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Lumos Studio - B2B Digital Presence & Visual Production</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <div class="grain"></div>
+
+  <!-- Topbar -->
+  <div class="topbar">
+    <div class="wrap">
+      <div class="nav">
+        <a class="brand" href="#top">
+          <img src="logo.png" alt="Lumos Studio logo" />
+          <strong id="brandTitle">LUMOS STUDIO</strong>
+        </a>
+
+        <div class="navlinks">
+          <a href="#services">Services</a>
+          <a href="#process">Process</a>
+        </div>
+
+        <div class="navcta">
+          <a class="btn" href="#services">See services +</a>
+          <a class="btn primary" href="#contact">Contact Us</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Hero -->
+  <header id="top" class="hero">
+    <div class="wrap">
+      <div class="heroGrid">
+        <div>
+          <div class="kicker reveal">
+            <span class="kdot"></span>
+            B2B Digital Presence & Visual Production
+          </div>
+
+          <h1 class="reveal" style="transition-delay:80ms">
+            Build trust before the first conversation.
+          </h1>
+
+          <p class="sub reveal" style="transition-delay:140ms">
+            We help B2B businesses present themselves professionally through structured websites,
+            clear brand systems, and corporate-safe visual content.
+          </p>
+
+          <!-- fewer buttons: one hero CTA -->
+          <div class="heroCtas reveal" style="transition-delay:200ms">
+            <a class="btn primary" href="#contact">Discuss your project</a>
+          </div>
+
+        </div>
+
+        <!-- HERO 3D + Adaptive Palette -->
+        <div class="panel reveal" style="transition-delay:120ms">
+          <div class="panelInner">
+            <div class="panelTop">
+              <div class="panelMark">
+                <img src="logo.png" alt="" />
+                <span>Your Website Preview</span>
+              </div>
+              <span>Interactive 3D-Prism</span>
+            </div>
+
+            <div class="hint">See how your website would look like in 10seconds!</div>
+
+            <div class="stage observe" id="stage">
+              <canvas id="pyramidCanvas"></canvas>
+              <div class="vignette"></div>
+            </div>
+
+            <div class="palettePanel">
+              <label class="panelLabel" for="companyInput">Your company name</label>
+              <input id="companyInput" class="panelInput" placeholder="Type your company name" />
+
+              <label class="panelLabel">Upload logo / choose palette</label>
+              <div class="uploadBox">
+                <input id="logoInput" type="file" accept="image/*" />
+                <img id="logoPreview" class="logoPreview" alt="Logo preview" />
+                <div id="palettePreview" class="paletteRow"></div>
+              </div>
+
+              <div class="presetOptions">
+                <button class="presetBtn" type="button" data-palette="minimalist" aria-pressed="true">
+                  <span class="presetName">Minimalist</span>
+                  <span class="paletteRow">
+                    <span class="paletteSwatch" style="background:#000000"></span>
+                    <span class="paletteSwatch" style="background:#ffffff"></span>
+                    <span class="paletteSwatch" style="background:#000000"></span>
+                  </span>
+                </button>
+                <button class="presetBtn" type="button" data-palette="mint">
+                  <span class="presetName">Mint Atelier</span>
+                  <span class="paletteRow">
+                    <span class="paletteSwatch" style="background:#2a9d8f"></span>
+                    <span class="paletteSwatch" style="background:#264653"></span>
+                    <span class="paletteSwatch" style="background:#e9c46a"></span>
+                  </span>
+                </button>
+                <button class="presetBtn" type="button" data-palette="orchard">
+                  <span class="presetName">Orchard Bloom</span>
+                  <span class="paletteRow">
+                    <span class="paletteSwatch" style="background:#7f5539"></span>
+                    <span class="paletteSwatch" style="background:#b08968"></span>
+                    <span class="paletteSwatch" style="background:#f1dca7"></span>
+                  </span>
+                </button>
+                <button class="presetBtn" type="button" data-palette="ocean">
+                  <span class="presetName">Ocean Breeze</span>
+                  <span class="paletteRow">
+                    <span class="paletteSwatch" style="background:#1e3a8a"></span>
+                    <span class="paletteSwatch" style="background:#3b82f6"></span>
+                    <span class="paletteSwatch" style="background:#06b6d4"></span>
+                  </span>
+                </button>
+                <button class="presetBtn" type="button" data-palette="forest">
+                  <span class="presetName">Forest Grove</span>
+                  <span class="paletteRow">
+                    <span class="paletteSwatch" style="background:#166534"></span>
+                    <span class="paletteSwatch" style="background:#16a34a"></span>
+                    <span class="paletteSwatch" style="background:#65a30d"></span>
+                  </span>
+                </button>
+              </div>
+
+              <button class="generateBtn" id="generateBtn">Generate</button>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </header>
+
+  <!-- Product Carousel -->
+  <section id="productSection" style="display: none;">
+    <div class="wrap">
+      <div class="carousel">
+        <div class="carousel-header">
+          <h2>Your Products</h2>
+        </div>
+        <div class="carousel-track">
+          <div class="card">
+            <h3 id="product1">Your Product 1</h3>
+            <p>Description for product 1.</p>
+          </div>
+          <div class="card">
+            <h3 id="product2">Your Product 2</h3>
+            <p>Description for product 2.</p>
+          </div>
+          <div class="card">
+            <h3 id="product3">Your Product 3</h3>
+            <p>Description for product 3.</p>
+          </div>
+        </div>
+        <div class="carousel-controls">
+          <button class="control-btn" id="prevBtn">&larr;</button>
+          <button class="control-btn" id="nextBtn">&rarr;</button>
+        </div>
+      </div>
+      <button id="backBtn" class="btn primary">Back to Home</button>
+    </div>
+  </section>
+
+  <!-- Problems -->
+  <section>
+    <div class="wrap">
+      <div class="sectionHead">
+        <h2 class="reveal">Business problems we solve</h2>
+        <p class="reveal" style="transition-delay:80ms">
+          Many strong businesses struggle to communicate value online. We build cohesive systems that improve credibility and clarity.
+        </p>
+      </div>
+
+      <div class="problems">
+        <div class="problem observe-problem">
+          <div class="tick">OK</div>
+          <div>
+            <strong>Outdated digital presence</strong>
+            <span>No longer reflects current capabilities or professionalism.</span>
+          </div>
+        </div>
+
+        <div class="problem observe-problem">
+          <div class="tick">OK</div>
+          <div>
+            <strong>Weak brand credibility</strong>
+            <span>Especially vs larger or more established competitors.</span>
+          </div>
+        </div>
+
+        <div class="problem observe-problem">
+          <div class="tick">OK</div>
+          <div>
+            <strong>Unstructured visual assets</strong>
+            <span>Inconsistent photos, videos, and brand materials.</span>
+          </div>
+        </div>
+
+        <div class="problem observe-problem">
+          <div class="tick">OK</div>
+          <div>
+            <strong>Low trust in online communication</strong>
+            <span>Poor first impressions with clients, partners, or investors.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Services -->
+  <section id="services">
+    <div class="wrap">
+      <div class="sectionHead">
+        <h2 class="reveal">Core services</h2>
+        <p class="reveal" style="transition-delay:80ms">
+          Corporate-standard work built for B2B: structure, hierarchy, usability, and visuals that reflect real environments.
+        </p>
+      </div>
+
+      <div class="grid3">
+        <div class="card observe-card">
+          <h3>Website & Digital Presence</h3>
+          <p>Corporate-standard sites tailored for B2B use cases: clarity, hierarchy, and credibility.</p>
+          <ul class="bullets">
+            <li>Corporate websites</li>
+            <li>Portfolio / product websites</li>
+            <li>Investor-ready pages</li>
+            <li>Usability & structure</li>
+          </ul>
+        </div>
+
+        <div class="card observe-card">
+          <h3>Branding & Identity</h3>
+          <p>Clear identity systems that support business communication - consistent, conservative, professional.</p>
+          <ul class="bullets">
+            <li>Brand identity systems</li>
+            <li>Visual guidelines</li>
+            <li>Pitch decks & proposals</li>
+            <li>Corporate comms assets</li>
+          </ul>
+        </div>
+
+        <div class="card observe-card">
+          <h3>Corporate Photo & Video</h3>
+          <p>Professional visuals built for trust in B2B contexts.</p>
+          <ul class="bullets">
+            <li>Office walkthrough videos</li>
+            <li>Process documentation</li>
+            <li>Leadership / team profiles</li>
+            <li>Corporate-safe edits</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Process -->
+  <section id="process">
+    <div class="wrap">
+      <div class="sectionHead">
+        <h2 class="reveal">Structured process</h2>
+        <p class="reveal" style="transition-delay:80ms">
+          Strategy first, then execution - built for B2B environments with professional standards.
+        </p>
+      </div>
+
+      <div class="timeline">
+        <div class="step observe-step">
+          <div class="num">1</div>
+          <div>
+            <h4>Business understanding & goal alignment</h4>
+            <p>We start by understanding objectives, industry context, and communication goals.</p>
+          </div>
+        </div>
+        <div class="step observe-step">
+          <div class="num">2</div>
+          <div>
+            <h4>Strategy, content & structure planning</h4>
+            <p>We define messaging, hierarchy, and visual structure aligned with business priorities.</p>
+          </div>
+        </div>
+        <div class="step observe-step">
+          <div class="num">3</div>
+          <div>
+            <h4>Design, development & production</h4>
+            <p>Execution of websites, brand assets, and visual production with professional standards.</p>
+          </div>
+        </div>
+        <div class="step observe-step">
+          <div class="num">4</div>
+          <div>
+            <h4>Delivery, refinement & support</h4>
+            <p>Final optimization, handover, and ongoing support as required.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section id="contact">
+    <div class="wrap">
+      <div class="cta observe-cta">
+        <h3>Ready to strengthen credibility?</h3>
+        <p>
+          If you're looking to improve your digital presence or corporate visual content, we'd be happy to discuss your requirements.
+        </p>
+
+        <!-- minimal buttons -->
+        <div class="heroCtas">
+          <a class="btn primary" href="mailto:lumos.ito3@gmail.com">Email us</a>
+          <a class="btn" href="https://www.lumosstudio.com" target="_blank" rel="noreferrer">Visit Us</a>
+        </div>
+      </div>
+
+      <div class="footer">
+        <span>Copyright <span id="year"></span> Lumos Studio</span>
+        <span>All Rights Reserved.</span>
+      </div>
+    </div>
+  </section>
+
+  <canvas id="paletteCanvas" width="200" height="200" style="display:none"></canvas>
+
+  <script src="script.js"></script>
+</body>
+</html>
