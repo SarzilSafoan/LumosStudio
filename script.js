@@ -39,9 +39,22 @@
     const logoPreview = document.getElementById("logoPreview");
     const palettePreview = document.getElementById("palettePreview");
     const generateBtn = document.getElementById("generateBtn");
-    const presetButtons = Array.from(document.querySelectorAll(".presetBtn"));
+    const presetSelect = document.getElementById("presetSelect");
     const canvas = document.getElementById("paletteCanvas");
     const ctx = canvas.getContext("2d", { willReadFrequently: true });
+    const welcomeTitle = document.getElementById("welcomeTitle");
+    const welcomeSub = document.getElementById("welcomeSub");
+    const welcomeLabel = document.getElementById("welcomeLabel");
+    const welcomeLogo = document.getElementById("welcomeLogo");
+    const productIntro = document.querySelector(".productIntro");
+
+    const teamModal = document.getElementById("teamModal");
+    const teamModalClose = document.querySelector(".teamModalClose");
+    const teamModalImage = document.getElementById("teamModalImage");
+    const teamModalName = document.getElementById("teamModalName");
+    const teamModalRole = document.getElementById("teamModalRole");
+    const teamModalBio = document.getElementById("teamModalBio");
+    const teamCards = Array.from(document.querySelectorAll(".teamCard"));
 
     if (!ctx) {
       console.warn('Canvas not supported, palette extraction disabled');
@@ -55,6 +68,43 @@
       logoInput.style.opacity = '0.5';
     }
 
+    function openTeamModal(card) {
+      if (!teamModal) return;
+      teamModalImage.src = card.dataset.image || "";
+      teamModalImage.alt = card.dataset.name ? `${card.dataset.name} portrait` : "Team portrait";
+      teamModalName.textContent = card.dataset.name || "";
+      teamModalRole.textContent = card.dataset.role || "";
+      teamModalBio.textContent = card.dataset.bio || "";
+      teamModal.classList.add("open");
+      teamModal.setAttribute("aria-hidden", "false");
+      document.body.style.overflow = "hidden";
+    }
+
+    function closeTeamModal() {
+      if (!teamModal) return;
+      teamModal.classList.remove("open");
+      teamModal.setAttribute("aria-hidden", "true");
+      document.body.style.overflow = "";
+    }
+
+    teamCards.forEach((card) => {
+      card.addEventListener("click", () => openTeamModal(card));
+    });
+
+    if (teamModal) {
+      teamModal.addEventListener("click", (event) => {
+        if (event.target === teamModal) closeTeamModal();
+      });
+    }
+
+    if (teamModalClose) {
+      teamModalClose.addEventListener("click", closeTeamModal);
+    }
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") closeTeamModal();
+    });
+
     const presetPalettes = {
       minimalist: ["#000000", "#ffffff", "#000000"],
       mint: ["#2a9d8f", "#264653", "#e9c46a"],
@@ -63,7 +113,7 @@
       forest: ["#166534", "#16a34a", "#65a30d"]
     };
 
-    let selectedPreset = "minimalist";
+    let selectedPreset = presetSelect ? presetSelect.value : "minimalist";
     let logoPalette = null;
     let uploadedLogo = null;
 
@@ -71,15 +121,13 @@
       // Removed: brandTitle update on input
     });
 
-    presetButtons.forEach((btn) => {
-      btn.addEventListener("click", () => {
-        presetButtons.forEach((b) => b.setAttribute("aria-pressed", "false"));
-        btn.setAttribute("aria-pressed", "true");
-        selectedPreset = btn.dataset.palette;
+    if (presetSelect) {
+      presetSelect.addEventListener("change", () => {
+        selectedPreset = presetSelect.value;
         logoPalette = null;
         renderPalettePreview(presetPalettes[selectedPreset]);
       });
-    });
+    }
 
     logoInput.addEventListener("change", (event) => {
       const file = event.target.files[0];
@@ -236,21 +284,37 @@
         : presetPalettes[selectedPreset];
       applyPalette(palette);
       triggerAnimation();
-      // Update brand title on generate
-      const company = companyInput.value.trim().toUpperCase() || "LUMOS STUDIO";
-      brandTitle.textContent = company;
-      // Update brand logo on generate if uploaded
-      if (uploadedLogo) {
-        const brandLogo = document.querySelector('.brand img');
-        brandLogo.src = uploadedLogo;
-      }
+      const companyRaw = companyInput.value.trim();
+      const company = companyRaw || "LUMOS STUDIO";
+      const companyDomain = (companyRaw || "lumos studio")
+        .toLowerCase()
+        .replace(/\s+/g, "");
+      brandTitle.textContent = `${companyDomain}.com`;
+      document.body.classList.add("product-mode");
       // Update product names
       document.getElementById('product1').textContent = company + " Product 1";
       document.getElementById('product2').textContent = company + " Product 2";
       document.getElementById('product3').textContent = company + " Product 3";
+      document.getElementById('product4').textContent = company + " Product 4";
+      document.getElementById('product5').textContent = company + " Product 5";
+      if (welcomeLabel) {
+        welcomeLabel.textContent = "WELCOME TO";
+      }
+      if (welcomeTitle) {
+        welcomeTitle.textContent = company.toUpperCase();
+      }
+      if (welcomeSub) {
+        welcomeSub.textContent = "We strive to bring your vision to life.";
+      }
+      if (welcomeLogo && productIntro) {
+        welcomeLogo.src = uploadedLogo || "logo.png";
+        productIntro.classList.add("has-logo");
+      }
       // Hide hero, show products
       document.querySelector('header').style.display = 'none';
       productSection.style.display = 'block';
+      currentIndex = 0;
+      requestAnimationFrame(updateTransform);
     });
 
     renderPalettePreview(presetPalettes[selectedPreset]);
@@ -484,17 +548,87 @@
     pyramidCanvas.addEventListener("pointercancel", endDrag);
     pyramidCanvas.addEventListener("contextmenu", (event) => event.preventDefault());
 
+    // Hero parallax
+    const parallaxHosts = Array.from(document.querySelectorAll(".parallaxZone"));
+    let pointerX = 0.5;
+    let pointerY = 0.5;
+    let parallaxTicking = false;
+
+    function updateParallax() {
+      if (parallaxHosts.length === 0) return;
+      parallaxHosts.forEach((host) => {
+        const rect = host.getBoundingClientRect();
+        const hostCenterY = rect.top + rect.height * 0.5;
+        const scrollFactor = (window.innerHeight * 0.5 - hostCenterY) / window.innerHeight;
+        const hostPointerX = parseFloat(host.dataset.pointerX || "0.5");
+        const hostPointerY = parseFloat(host.dataset.pointerY || "0.5");
+        host.querySelectorAll("[data-parallax]").forEach((el) => {
+          const depth = parseFloat(el.dataset.parallax || "0.2");
+          const x = (hostPointerX - 0.5) * 60 * depth;
+          const y = (scrollFactor * 90 + (hostPointerY - 0.5) * 50) * depth;
+          el.style.transform = `translate3d(${x}px, ${y}px, 0)`;
+        });
+      });
+      parallaxTicking = false;
+    }
+
+    function requestParallaxUpdate() {
+      if (parallaxTicking) return;
+      parallaxTicking = true;
+      requestAnimationFrame(updateParallax);
+    }
+
+    parallaxHosts.forEach((host) => {
+      host.addEventListener("pointermove", (event) => {
+        const rect = host.getBoundingClientRect();
+        pointerX = (event.clientX - rect.left) / rect.width;
+        pointerY = (event.clientY - rect.top) / rect.height;
+        host.dataset.pointerX = String(pointerX);
+        host.dataset.pointerY = String(pointerY);
+        requestParallaxUpdate();
+      });
+
+      host.addEventListener("pointerleave", () => {
+        pointerX = 0.5;
+        pointerY = 0.5;
+        host.dataset.pointerX = "0.5";
+        host.dataset.pointerY = "0.5";
+        requestParallaxUpdate();
+      });
+    });
+
+    window.addEventListener("scroll", requestParallaxUpdate, { passive: true });
+    window.addEventListener("resize", requestParallaxUpdate);
+    requestParallaxUpdate();
+
     // Product section
     const productSection = document.getElementById('productSection');
     const backBtn = document.getElementById('backBtn');
     const prevBtn = document.getElementById('prevBtn');
     const nextBtn = document.getElementById('nextBtn');
     const track = document.querySelector('.carousel-track');
+    const cards = Array.from(track.querySelectorAll('.card'));
     let currentIndex = 0;
 
+    function getCarouselMetrics() {
+      const styles = window.getComputedStyle(track);
+      const gap = parseFloat(styles.columnGap || styles.gap) || 0;
+      const cardWidth = cards[0] ? cards[0].getBoundingClientRect().width : 0;
+      const step = cardWidth + gap;
+      const visibleCount = step > 0
+        ? Math.max(1, Math.floor((track.clientWidth + gap) / step))
+        : 1;
+      const maxIndex = Math.max(0, cards.length - visibleCount);
+      return { step, maxIndex };
+    }
+
     function updateTransform() {
-      const offset = -currentIndex * 278; // 260 + 18
+      const { step, maxIndex } = getCarouselMetrics();
+      currentIndex = Math.min(currentIndex, maxIndex);
+      const offset = -currentIndex * step;
       track.style.transform = `translateX(${offset}px)`;
+      prevBtn.disabled = currentIndex === 0;
+      nextBtn.disabled = currentIndex >= maxIndex;
     }
 
     prevBtn.addEventListener('click', () => {
@@ -503,7 +637,8 @@
     });
 
     nextBtn.addEventListener('click', () => {
-      currentIndex = Math.min(2, currentIndex + 1);
+      const { maxIndex } = getCarouselMetrics();
+      currentIndex = Math.min(maxIndex, currentIndex + 1);
       updateTransform();
     });
 
@@ -514,15 +649,25 @@
       brandTitle.textContent = "LUMOS STUDIO";
       const brandLogo = document.querySelector('.brand img');
       brandLogo.src = "logo.png";
+      document.body.classList.remove("product-mode");
       selectedPreset = "minimalist";
       logoPalette = null;
       uploadedLogo = null;
       companyInput.value = "";
       logoInput.value = "";
       logoPreview.src = "";
-      // Reset preset buttons
-      presetButtons.forEach(btn => btn.setAttribute("aria-pressed", "false"));
-      document.querySelector('[data-palette="minimalist"]').setAttribute("aria-pressed", "true");
+      if (welcomeLogo && productIntro) {
+        welcomeLogo.removeAttribute("src");
+        productIntro.classList.remove("has-logo");
+      }
+      // Reset preset selection
+      if (presetSelect) presetSelect.value = "minimalist";
       // Reset palette to primary
       applyPalette(presetPalettes["minimalist"]);
+      renderPalettePreview(presetPalettes["minimalist"]);
+      currentIndex = 0;
+      updateTransform();
     });
+
+    window.addEventListener('resize', updateTransform);
+    updateTransform();
