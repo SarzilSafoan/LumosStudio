@@ -1,4 +1,4 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
@@ -9,6 +9,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <link rel="icon" type="image/png" href="favicon.png">
 
   <link rel="stylesheet" href="style.css">
 </head>
@@ -26,12 +28,12 @@
         </a>
 
         <div class="navlinks">
-          <a href="#services">Services</a>
           <a href="#process">Process</a>
+          <a href="#team">Team</a>
         </div>
 
         <div class="navcta">
-          <a class="btn" href="#services">See services +</a>
+          <a class="btn" href="#services">See services</a>
           <a class="btn primary" href="#contact">Contact Us</a>
         </div>
       </div>
@@ -40,6 +42,11 @@
 
   <!-- Hero -->
   <header id="top" class="hero">
+    <div class="heroVideo" aria-hidden="true">
+      <video autoplay muted loop playsinline>
+        <source src="scene.mp4" type="video/mp4" />
+      </video>
+    </div>
     <div class="wrap">
       <div class="heroGrid">
         <div>
@@ -90,51 +97,20 @@
               <div class="uploadBox">
                 <input id="logoInput" type="file" accept="image/*" />
                 <img id="logoPreview" class="logoPreview" alt="Logo preview" />
-                <div id="palettePreview" class="paletteRow"></div>
               </div>
 
-              <div class="presetOptions">
-                <button class="presetBtn" type="button" data-palette="minimalist" aria-pressed="true">
-                  <span class="presetName">Minimalist</span>
-                  <span class="paletteRow">
-                    <span class="paletteSwatch" style="background:#000000"></span>
-                    <span class="paletteSwatch" style="background:#ffffff"></span>
-                    <span class="paletteSwatch" style="background:#000000"></span>
-                  </span>
-                </button>
-                <button class="presetBtn" type="button" data-palette="mint">
-                  <span class="presetName">Mint Atelier</span>
-                  <span class="paletteRow">
-                    <span class="paletteSwatch" style="background:#2a9d8f"></span>
-                    <span class="paletteSwatch" style="background:#264653"></span>
-                    <span class="paletteSwatch" style="background:#e9c46a"></span>
-                  </span>
-                </button>
-                <button class="presetBtn" type="button" data-palette="orchard">
-                  <span class="presetName">Orchard Bloom</span>
-                  <span class="paletteRow">
-                    <span class="paletteSwatch" style="background:#7f5539"></span>
-                    <span class="paletteSwatch" style="background:#b08968"></span>
-                    <span class="paletteSwatch" style="background:#f1dca7"></span>
-                  </span>
-                </button>
-                <button class="presetBtn" type="button" data-palette="ocean">
-                  <span class="presetName">Ocean Breeze</span>
-                  <span class="paletteRow">
-                    <span class="paletteSwatch" style="background:#1e3a8a"></span>
-                    <span class="paletteSwatch" style="background:#3b82f6"></span>
-                    <span class="paletteSwatch" style="background:#06b6d4"></span>
-                  </span>
-                </button>
-                <button class="presetBtn" type="button" data-palette="forest">
-                  <span class="presetName">Forest Grove</span>
-                  <span class="paletteRow">
-                    <span class="paletteSwatch" style="background:#166534"></span>
-                    <span class="paletteSwatch" style="background:#16a34a"></span>
-                    <span class="paletteSwatch" style="background:#65a30d"></span>
-                  </span>
-                </button>
+              <div class="presetDropdown">
+                <label class="panelLabel" for="presetSelect">Preset palette</label>
+                <select id="presetSelect" class="panelSelect">
+                  <option value="minimalist">Minimalist</option>
+                  <option value="mint">Mint Atelier</option>
+                  <option value="orchard">Orchard Bloom</option>
+                  <option value="ocean">Ocean Breeze</option>
+                  <option value="forest">Forest Grove</option>
+                </select>
               </div>
+
+              <div id="palettePreview" class="paletteRow palettePreview"></div>
 
               <button class="generateBtn" id="generateBtn">Generate</button>
             </div>
@@ -149,6 +125,16 @@
   <!-- Product Carousel -->
   <section id="productSection" style="display: none;">
     <div class="wrap">
+      <div class="productIntro">
+        <div class="productIntroText">
+          <span id="welcomeLabel" class="welcomeLabel">WELCOME TO</span>
+          <h2 id="welcomeTitle">LUMOS STUDIO</h2>
+          <p id="welcomeSub">We strive to bring your vision to life.</p>
+        </div>
+        <div class="productIntroLogo">
+          <img id="welcomeLogo" alt="Company logo" />
+        </div>
+      </div>
       <div class="carousel">
         <div class="carousel-header">
           <h2>Your Products</h2>
@@ -157,14 +143,27 @@
           <div class="card">
             <h3 id="product1">Your Product 1</h3>
             <p>Description for product 1.</p>
+            <button class="btn buyBtn" type="button">Buy Now</button>
           </div>
           <div class="card">
             <h3 id="product2">Your Product 2</h3>
             <p>Description for product 2.</p>
+            <button class="btn buyBtn" type="button">Buy Now</button>
           </div>
           <div class="card">
             <h3 id="product3">Your Product 3</h3>
             <p>Description for product 3.</p>
+            <button class="btn buyBtn" type="button">Buy Now</button>
+          </div>
+          <div class="card">
+            <h3 id="product4">Your Product 4</h3>
+            <p>Description for product 4.</p>
+            <button class="btn buyBtn" type="button">Buy Now</button>
+          </div>
+          <div class="card">
+            <h3 id="product5">Your Product 5</h3>
+            <p>Description for product 5.</p>
+            <button class="btn buyBtn" type="button">Buy Now</button>
           </div>
         </div>
         <div class="carousel-controls">
@@ -312,8 +311,84 @@
     </div>
   </section>
 
+  <!-- Team -->
+  <section id="team" class="parallaxZone">
+    <div class="sectionParallax" aria-hidden="true">
+      <span class="heroOrb orb1" data-parallax="0.18"></span>
+      <span class="heroOrb orb2" data-parallax="0.28"></span>
+      <span class="heroOrb orb3" data-parallax="0.36"></span>
+      <span class="heroLine line1" data-parallax="0.2"></span>
+      <span class="heroLine line2" data-parallax="0.3"></span>
+    </div>
+    <div class="wrap">
+      <div class="sectionHead">
+        <h2 class="reveal">Our Team</h2>
+        <p class="reveal" style="transition-delay:80ms">
+          A team focused on clarity, execution, and long-term brand trust.
+        </p>
+      </div>
+
+      <div class="teamGrid">
+        <button class="teamCard" type="button"
+          data-name="Mashharar Bhuiyan"
+          data-role="Advisor"
+          data-bio="Leads visual strategy and brand systems with a focus on clarity and long-term trust in B2B markets."
+          data-image="images/mashharar.jpg">
+          <img src="images/mashharar.jpg" alt="Mashharar Bhuiyan portrait" />
+          <div class="teamInfo">
+            <h3>Mashharar Bhuiyan</h3>
+            <span>Advisor</span>
+          </div>
+        </button>
+
+        <button class="teamCard" type="button"
+          data-name="Mahmudur Rahman Shimanto"
+          data-role="CEO and Founder"
+          data-bio="Translates complex offerings into structured messaging, positioning, and high-clarity content systems."
+          data-image="images/shimanto.JPG">
+          <img src="images/shimanto.JPG" alt="Mahmudur Rahman Shimanto portrait" />
+          <div class="teamInfo">
+            <h3>Mahmudur Rahman Shimanto</h3>
+            <span>CEO and Founder</span>
+          </div>
+        </button>
+
+        <button class="teamCard" type="button"
+          data-name="Sarzil Safoan"
+          data-role="CTO and Programmer"
+          data-bio="Creates corporate-safe visuals and production pipelines that scale across teams and channels."
+          data-image="images/safoan.jpg">
+          <img src="images/safoan.jpg" alt="Sarzil Safoan portrait" />
+          <div class="teamInfo">
+            <h3>Sarzil Safoan</h3>
+            <span>CTO and Programmer</span>
+          </div>
+        </button>
+
+        <button class="teamCard" type="button"
+          data-name="Abdullah Al Fahad"
+          data-role="CMO and Designer"
+          data-bio="Designs customer journeys and interface systems that prioritize usability and structured storytelling."
+          data-image="images/fahad.JPG">
+          <img src="images/fahad.JPG" alt="Abdullah Al Fahad portrait" />
+          <div class="teamInfo">
+            <h3>Abdullah Al Fahad</h3>
+            <span>CMO and Designer</span>
+          </div>
+        </button>
+      </div>
+    </div>
+  </section>
+
   <!-- CTA -->
-  <section id="contact">
+  <section id="contact" class="footerZone parallaxZone">
+    <div class="footerParallax sectionParallax" aria-hidden="true">
+      <span class="heroOrb orb1" data-parallax="0.18"></span>
+      <span class="heroOrb orb2" data-parallax="0.28"></span>
+      <span class="heroOrb orb3" data-parallax="0.36"></span>
+      <span class="heroLine line1" data-parallax="0.2"></span>
+      <span class="heroLine line2" data-parallax="0.3"></span>
+    </div>
     <div class="wrap">
       <div class="cta observe-cta">
         <h3>Ready to strengthen credibility?</h3>
@@ -336,6 +411,18 @@
   </section>
 
   <canvas id="paletteCanvas" width="200" height="200" style="display:none"></canvas>
+
+  <div id="teamModal" class="teamModal" aria-hidden="true" role="dialog" aria-modal="true">
+    <button class="teamModalClose" type="button" aria-label="Close">✕</button>
+    <div class="teamModalContent">
+      <img id="teamModalImage" class="teamModalImage" alt="" />
+      <div class="teamModalInfo">
+        <h3 id="teamModalName"></h3>
+        <span id="teamModalRole"></span>
+        <p id="teamModalBio"></p>
+      </div>
+    </div>
+  </div>
 
   <script src="script.js"></script>
 </body>
