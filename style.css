@@ -578,38 +578,45 @@
     }
     .teamCard:hover{transform: translateY(-4px); box-shadow: 0 20px 48px rgba(0,0,0,.14);}
 
-    /* image is hidden by default; appears on hover covering the card */
+    /* image is hidden by default; appears on hover covering content and following cursor */
     .teamImageContainer{
-      position: absolute;
-      inset: 0;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      overflow:hidden;
-      border-radius: inherit;
+      position: fixed; /* follow viewport */
+      left: 0; top: 0;
+      width: 0; height: 0;
+      overflow: visible;
+      pointer-events: none;
       opacity: 0;
       visibility: hidden;
-      pointer-events: none;
-      transition: opacity 300ms ease, visibility 300ms ease;
-      z-index: 3;
+      transition: opacity 220ms ease, visibility 220ms ease;
+      z-index: 9999; /* on top of everything */
     }
-    .teamCard:hover .teamImageContainer{
+    .teamImageContainer.visible{
       opacity: 1;
       visibility: visible;
-      pointer-events: auto;
     }
     .teamImageContainer img{
-      position: absolute;
-      left: 50%; top: 50%;
-      transform: translate(-50%, -50%) translate(var(--tx, 0px), var(--ty, 0px)) scale(var(--s, 1));
-      height: 140%;
+      position: fixed;
+      left: 0; top: 0;
+      transform: translate(-50%, -50%) scale(1.12);
+      height: auto;
       width: auto;
+      max-width: none;
       object-fit: cover;
       transition: transform 220ms ease, opacity 200ms ease;
       will-change: transform, opacity;
+      pointer-events: none;
+      mix-blend-mode: normal;
+      filter: none;
+      border: none;
+      border-radius: 0;
+      box-shadow: none;
+      animation: floaty 4s ease-in-out infinite;
     }
-    /* slightly larger on hover */
-    .teamCard:hover{ --s: 1.12 }
+    @keyframes floaty{
+      0%{transform: translate(-50%, -50%) translateY(-6px) scale(1.12)}
+      50%{transform: translate(-50%, -50%) translateY(6px) scale(1.13)}
+      100%{transform: translate(-50%, -50%) translateY(-6px) scale(1.12)}
+    }
 
     .teamInfo{
       display:flex;

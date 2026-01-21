@@ -127,24 +127,38 @@
       card.addEventListener("click", () => openTeamModal(card));
     });
 
-    // Pointer-opposite image movement: image shifts slightly opposite to cursor within the card
+    // Create single overlay container appended to body so it's never clipped
+    const overlay = document.createElement('div');
+    overlay.className = 'teamImageContainer';
+    const overlayImg = document.createElement('img');
+    overlay.appendChild(overlayImg);
+    document.body.appendChild(overlay);
+
+    // Hover image: uses the shared overlay, follows cursor, slightly larger than card
     teamCards.forEach((card) => {
-      card.style.setProperty('--tx', '0px');
-      card.style.setProperty('--ty', '0px');
+      const imgSrc = card.dataset.image || (card.querySelector('img') ? card.querySelector('img').src : '');
+      if (!imgSrc) return;
+
+      card.addEventListener('pointerenter', (e) => {
+        overlayImg.src = imgSrc;
+        overlay.classList.add('visible');
+        overlayImg.style.opacity = '1';
+      });
+
       card.addEventListener('pointermove', (e) => {
         const rect = card.getBoundingClientRect();
-        const cx = rect.left + rect.width / 2;
-        const cy = rect.top + rect.height / 2;
-        const dx = (e.clientX - cx) / rect.width; // -0.5 .. 0.5
-        const dy = (e.clientY - cy) / rect.height;
-        const tx = -dx * 24; // invert direction, scale for subtle motion
-        const ty = -dy * 12;
-        card.style.setProperty('--tx', tx + 'px');
-        card.style.setProperty('--ty', ty + 'px');
+        const x = e.clientX;
+        const y = e.clientY;
+        overlayImg.style.left = x + 'px';
+        overlayImg.style.top = y + 'px';
+        const sizeH = Math.round(rect.height * 1.15);
+        overlayImg.style.height = sizeH + 'px';
+        overlayImg.style.width = 'auto';
       }, { passive: true });
+
       card.addEventListener('pointerleave', () => {
-        card.style.setProperty('--tx', '0px');
-        card.style.setProperty('--ty', '0px');
+        overlay.classList.remove('visible');
+        overlayImg.style.opacity = '0';
       });
     });
 
