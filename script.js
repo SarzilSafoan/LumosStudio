@@ -56,6 +56,23 @@
     const teamModalBio = document.getElementById("teamModalBio");
     const teamCards = Array.from(document.querySelectorAll(".teamCard"));
 
+    const panelToggle = document.getElementById("panelToggle");
+    const panelInner = document.querySelector(".panelInner");
+
+    if (panelToggle) {
+      panelToggle.addEventListener("click", () => {
+        if (panelInner) {
+          panelInner.classList.toggle("collapsed");
+          localStorage.setItem("panelCollapsed", panelInner.classList.contains("collapsed"));
+        }
+      });
+
+      // Restore collapsed state on page load
+      if (localStorage.getItem("panelCollapsed") === "true" && panelInner) {
+        panelInner.classList.add("collapsed");
+      }
+    }
+
     if (!ctx) {
       console.warn('Canvas not supported, palette extraction disabled');
       logoInput.disabled = true;
@@ -70,11 +87,29 @@
 
     function openTeamModal(card) {
       if (!teamModal) return;
-      teamModalImage.src = card.dataset.image || "";
+      const src = card.dataset.image || "";
+      teamModalImage.src = src;
       teamModalImage.alt = card.dataset.name ? `${card.dataset.name} portrait` : "Team portrait";
       teamModalName.textContent = card.dataset.name || "";
       teamModalRole.textContent = card.dataset.role || "";
       teamModalBio.textContent = card.dataset.bio || "";
+
+      // Determine aspect from natural image size and add class to modal
+      teamModal.classList.remove('wide', 'tall');
+      if (src) {
+        const probe = new Image();
+        probe.onload = () => {
+          if (!teamModal) return;
+          // If image is wider than tall -> show image on top (wide)
+          if (probe.naturalWidth > probe.naturalHeight) teamModal.classList.add('wide');
+          // If image is taller than wide -> show image on the right (tall)
+          else teamModal.classList.add('tall');
+        };
+        probe.src = src;
+      } else {
+        teamModal.classList.add('wide');
+      }
+
       teamModal.classList.add("open");
       teamModal.setAttribute("aria-hidden", "false");
       document.body.style.overflow = "hidden";
@@ -84,11 +119,33 @@
       if (!teamModal) return;
       teamModal.classList.remove("open");
       teamModal.setAttribute("aria-hidden", "true");
+      teamModal.classList.remove('wide', 'tall');
       document.body.style.overflow = "";
     }
 
     teamCards.forEach((card) => {
       card.addEventListener("click", () => openTeamModal(card));
+    });
+
+    // Pointer-opposite image movement: image shifts slightly opposite to cursor within the card
+    teamCards.forEach((card) => {
+      card.style.setProperty('--tx', '0px');
+      card.style.setProperty('--ty', '0px');
+      card.addEventListener('pointermove', (e) => {
+        const rect = card.getBoundingClientRect();
+        const cx = rect.left + rect.width / 2;
+        const cy = rect.top + rect.height / 2;
+        const dx = (e.clientX - cx) / rect.width; // -0.5 .. 0.5
+        const dy = (e.clientY - cy) / rect.height;
+        const tx = -dx * 24; // invert direction, scale for subtle motion
+        const ty = -dy * 12;
+        card.style.setProperty('--tx', tx + 'px');
+        card.style.setProperty('--ty', ty + 'px');
+      }, { passive: true });
+      card.addEventListener('pointerleave', () => {
+        card.style.setProperty('--tx', '0px');
+        card.style.setProperty('--ty', '0px');
+      });
     });
 
     if (teamModal) {
@@ -105,6 +162,31 @@
       if (event.key === "Escape") closeTeamModal();
     });
 
+    // Make logo preview clickable to upload (if UI exists)
+    const uploadBtn = document.getElementById("uploadBtn");
+    const imageContainer = document.querySelector(".imageContainer");
+    if (uploadBtn) {
+      uploadBtn.addEventListener("click", () => {
+        if (logoInput) logoInput.click();
+      });
+    }
+
+    if (logoPreview) {
+      logoPreview.addEventListener("click", () => {
+        if (logoInput) logoInput.click();
+      });
+    }
+
+    function toggleUploadUI(hasImage) {
+      if (!uploadBtn || !imageContainer) return;
+      if (hasImage) {
+        uploadBtn.classList.add("hidden");
+        imageContainer.classList.add("visible");
+      } else {
+        uploadBtn.classList.remove("hidden");
+        imageContainer.classList.remove("visible");
+      }
+    }
     const presetPalettes = {
       minimalist: ["#000000", "#ffffff", "#000000"],
       mint: ["#2a9d8f", "#264653", "#e9c46a"],
@@ -152,6 +234,7 @@
       reader.onload = () => {
         logoPreview.src = reader.result;
         uploadedLogo = reader.result;
+        toggleUploadUI(true);
         extractPalette(reader.result);
       };
       reader.onerror = () => {
@@ -159,6 +242,7 @@
         event.target.value = '';
         logoPreview.src = '';
         uploadedLogo = null;
+        toggleUploadUI(false);
         brandLogo.src = 'logo.png';
       };
       reader.readAsDataURL(file);
@@ -192,6 +276,11 @@
             });
           logoPalette = ranked.length ? ranked : null;
           renderPalettePreview(ranked);
+          console.log(ranked);
+          if (logoPalette && logoPalette.length >= 3) {
+            applyPalette(logoPalette);
+            triggerAnimation();
+          }
         } catch (error) {
           console.error('Error processing image:', error);
           alert('Error processing the image. Please try a different image.');
@@ -205,7 +294,7 @@
         renderPalettePreview(presetPalettes[selectedPreset]);
       };
       image.src = dataUrl;
-    }
+    } 
 
     function renderPalettePreview(colors) {
       palettePreview.innerHTML = "";
@@ -660,6 +749,8 @@
         welcomeLogo.removeAttribute("src");
         productIntro.classList.remove("has-logo");
       }
+      // Reset upload UI if available
+      if (typeof toggleUploadUI === 'function') toggleUploadUI(false);
       // Reset preset selection
       if (presetSelect) presetSelect.value = "minimalist";
       // Reset palette to primary

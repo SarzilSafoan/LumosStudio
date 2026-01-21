@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
@@ -22,13 +22,14 @@
   <div class="topbar">
     <div class="wrap">
       <div class="nav">
-        <a class="brand" href="#top">
+        <a class="brand" href="index.html#top">
           <img src="logo.png" alt="Lumos Studio logo" />
           <strong id="brandTitle">LUMOS STUDIO</strong>
         </a>
 
         <div class="navlinks">
           <a href="#process">Process</a>
+          <a href="about.html">About</a>
           <a href="#team">Team</a>
         </div>
 
@@ -80,13 +81,16 @@
                 <span>Your Website Preview</span>
               </div>
               <span>Interactive 3D-Prism</span>
+              <button class="panelToggle" id="panelToggle" aria-label="Toggle palette panel">
+                <span class="toggleIcon">▼</span>
+              </button>
             </div>
 
             <div class="hint">See how your website would look like in 10seconds!</div>
 
             <div class="stage observe" id="stage">
               <canvas id="pyramidCanvas"></canvas>
-              <div class="vignette"></div>
+              <div class=""></div>
             </div>
 
             <div class="palettePanel">
@@ -96,7 +100,15 @@
               <label class="panelLabel">Upload logo / choose palette</label>
               <div class="uploadBox">
                 <input id="logoInput" type="file" accept="image/*" />
-                <img id="logoPreview" class="logoPreview" alt="Logo preview" />
+                <button class="uploadBtn" id="uploadBtn" type="button">
+                  <span>+ Upload Logo</span>
+                </button>
+                <div class="imageContainer">
+                  <img id="logoPreview" class="logoPreview" alt="Logo preview" />
+                  <div class="editOverlay">
+                    <span class="editIcon">✎</span>
+                  </div>
+                </div>
               </div>
 
               <div class="presetDropdown">
@@ -187,7 +199,7 @@
 
       <div class="problems">
         <div class="problem observe-problem">
-          <div class="tick">OK</div>
+          
           <div>
             <strong>Outdated digital presence</strong>
             <span>No longer reflects current capabilities or professionalism.</span>
@@ -195,7 +207,7 @@
         </div>
 
         <div class="problem observe-problem">
-          <div class="tick">OK</div>
+          
           <div>
             <strong>Weak brand credibility</strong>
             <span>Especially vs larger or more established competitors.</span>
@@ -203,7 +215,7 @@
         </div>
 
         <div class="problem observe-problem">
-          <div class="tick">OK</div>
+          
           <div>
             <strong>Unstructured visual assets</strong>
             <span>Inconsistent photos, videos, and brand materials.</span>
@@ -211,7 +223,7 @@
         </div>
 
         <div class="problem observe-problem">
-          <div class="tick">OK</div>
+          
           <div>
             <strong>Low trust in online communication</strong>
             <span>Poor first impressions with clients, partners, or investors.</span>
@@ -334,10 +346,13 @@
           data-role="Advisor"
           data-bio="Leads visual strategy and brand systems with a focus on clarity and long-term trust in B2B markets."
           data-image="images/mashharar.jpg">
-          <img src="images/mashharar.jpg" alt="Mashharar Bhuiyan portrait" />
+          <div class="teamImageContainer">
+            <img src="images/mashharar.jpg" alt="Mashharar Bhuiyan portrait" />
+          </div>
           <div class="teamInfo">
-            <h3>Mashharar Bhuiyan</h3>
-            <span>Advisor</span>
+            <span class="role">Advisor</span>
+            <h3 class="name">Mashharar Bhuiyan</h3>
+            <p class="teamBio">Leads visual strategy and brand systems with a focus on clarity and long-term trust in B2B markets.</p>
           </div>
         </button>
 
@@ -346,10 +361,13 @@
           data-role="CEO and Founder"
           data-bio="Translates complex offerings into structured messaging, positioning, and high-clarity content systems."
           data-image="images/shimanto.JPG">
-          <img src="images/shimanto.JPG" alt="Mahmudur Rahman Shimanto portrait" />
+          <div class="teamImageContainer">
+            <img src="images/shimanto.JPG" alt="Mahmudur Rahman Shimanto portrait" />
+          </div>
           <div class="teamInfo">
-            <h3>Mahmudur Rahman Shimanto</h3>
-            <span>CEO and Founder</span>
+            <span class="role">CEO and Founder</span>
+            <h3 class="name">Mahmudur Rahman Shimanto</h3>
+            <p class="teamBio">Translates complex offerings into structured messaging, positioning, and high-clarity content systems.</p>
           </div>
         </button>
 
@@ -358,10 +376,13 @@
           data-role="CTO and Programmer"
           data-bio="Creates corporate-safe visuals and production pipelines that scale across teams and channels."
           data-image="images/safoan.jpg">
-          <img src="images/safoan.jpg" alt="Sarzil Safoan portrait" />
+          <div class="teamImageContainer">
+            <img src="images/safoan.jpg" alt="Sarzil Safoan portrait" />
+          </div>
           <div class="teamInfo">
-            <h3>Sarzil Safoan</h3>
-            <span>CTO and Programmer</span>
+            <span class="role">CTO and Programmer</span>
+            <h3 class="name">Sarzil Safoan</h3>
+            <p class="teamBio">Creates corporate-safe visuals and production pipelines that scale across teams and channels.</p>
           </div>
         </button>
 
@@ -370,10 +391,13 @@
           data-role="CMO and Designer"
           data-bio="Designs customer journeys and interface systems that prioritize usability and structured storytelling."
           data-image="images/fahad.JPG">
-          <img src="images/fahad.JPG" alt="Abdullah Al Fahad portrait" />
+          <div class="teamImageContainer">
+            <img src="images/fahad.JPG" alt="Abdullah Al Fahad portrait" />
+          </div>
           <div class="teamInfo">
-            <h3>Abdullah Al Fahad</h3>
-            <span>CMO and Designer</span>
+            <span class="role">CMO and Designer</span>
+            <h3 class="name">Abdullah Al Fahad</h3>
+            <p class="teamBio">Designs customer journeys and interface systems that prioritize usability and structured storytelling.</p>
           </div>
         </button>
       </div>

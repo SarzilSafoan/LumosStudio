@@ -1,19 +1,19 @@
     :root{
       --bg: #e9e1db;
       --ink: #0c0c0c;
-      --muted: rgba(12,12,12,.72);
-      --soft: rgba(12,12,12,.08);
-      --soft2: rgba(12,12,12,.12);
-      --surface: rgba(255,255,255,.28);
-      --surface-strong: rgba(255,255,255,.40);
-      --surface-soft: rgba(255,255,255,.18);
+      --muted: rgba(12,12,12,.85);
+      --soft: rgba(12,12,12,.06);
+      --soft2: rgba(12,12,12,.10);
+      --surface: rgba(12,12,12,.08);
+      --surface-strong: rgba(12,12,12,.12);
+      --surface-soft: rgba(12,12,12,.05);
       --primary: #0c0c0c;
       --secondary: #6f5f55;
       --accent: #c36a2d;
       --radius: 22px;
       --radius2: 28px;
-      --shadow: 0 18px 55px rgba(0,0,0,.10);
-      --shadow2: 0 10px 26px rgba(0,0,0,.10);
+      --shadow: 0 18px 55px rgba(0,0,0,.08);
+      --shadow2: 0 10px 26px rgba(0,0,0,.08);
       --max: 1120px;
     }
 
@@ -72,9 +72,9 @@
 
     .topbar{
       position:sticky; top:0; z-index:50;
-      backdrop-filter: blur(10px);
-      background: linear-gradient(to bottom, rgba(233,225,219,.86), rgba(233,225,219,.55));
-      border-bottom: 1px solid var(--soft);
+      backdrop-filter: blur(8px);
+      background: transparent; /* transparent top navigation */
+      border-bottom: none;
     }
     .nav{
       display:flex; align-items:center; justify-content:space-between;
@@ -84,6 +84,11 @@
     .brand{
       display:flex; align-items:center; gap:12px;
       text-decoration:none;
+      cursor: pointer;
+      transition: opacity 200ms ease;
+    }
+    .brand:hover{
+      opacity: 0.8;
     }
     .brand img{
       width:38px; height:38px; object-fit:contain;
@@ -141,7 +146,7 @@
     }
     .btn.primary:hover{transform: translateY(-2px) scale(1.01);}
 
-    header.hero{padding: 54px 0 34px; position:relative; z-index: 2; overflow: hidden;}
+    header.hero{min-height:100vh; display:flex; align-items:center; padding: 54px 0 34px; position:relative; z-index: 2; overflow: hidden;}
     .heroVideo{
       position:absolute;
       inset: 0;
@@ -247,7 +252,7 @@
     }
 
     .panel{
-      border-radius: var(--radius2);
+      border-radius: 10px;
       background: linear-gradient(135deg, var(--surface-strong), var(--surface-soft));
       border: 1px solid var(--soft2);
       box-shadow: var(--shadow);
@@ -258,10 +263,37 @@
     .panelInner{
       position:relative;
       padding: 18px;
-      height: 100%;
       display:flex;
       flex-direction:column;
       gap: 14px;
+      height: auto;
+      min-height: 360px;
+    }
+    .panelInner.collapsed .palettePanel{
+      display: none;
+    }
+    /* Large screens (>= 921px): Collapse palette, keep stage more visible */
+    @media (min-width: 921px){
+      .panelInner.collapsed{
+        min-height: auto;
+      }
+      .panelInner.collapsed .stage{
+        flex: 0 1 auto;
+        min-height: 200px;
+      }
+      .panelInner.collapsed .hint{
+        display: none;
+      }
+    }
+    /* Small screens (<= 920px): Collapse palette, shrink stage more */
+    @media (max-width: 920px){
+      .panelInner.collapsed{
+        min-height: auto;
+      }
+      .panelInner.collapsed .stage{
+        flex: 0 1 auto;
+        min-height: 160px;
+      }
     }
     .panelTop{
       display:flex; align-items:center; justify-content:space-between;
@@ -271,15 +303,38 @@
       font-size: 13px;
       z-index:2;
     }
+    .panelToggle{
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--muted);
+      font-weight: 700;
+      font-size: 13px;
+      padding: 4px 8px;
+      transition: background 200ms ease, color 200ms ease;
+      display: flex;
+      align-items: center;
+    }
+    .panelToggle:hover{
+      background: var(--soft);
+      color: var(--ink);
+    }
+    .toggleIcon{
+      display: inline-block;
+      transition: transform 300ms ease;
+    }
+    .panelInner.collapsed .toggleIcon{
+      transform: rotate(-180deg);
+    }
     .panelMark{display:flex; align-items:center; gap:10px;}
     .panelMark img{width:34px; height:34px; object-fit:contain;}
     .hint{
       font-weight:700;
-      color: var(--muted);
+      color: var(--ink);
       padding: 8px 10px;
       border-radius: 999px;
-      border: 1px solid var(--soft);
-      background: var(--surface);
+      border: none;
+      background: transparent;
       width: fit-content;
       z-index:2;
     }
@@ -292,12 +347,15 @@
       overflow:hidden;
       flex: 1 1 auto;
       min-height: 220px;
-      perspective: 900px;
+      
     }
     canvas#pyramidCanvas{
-      position:absolute; inset:0;
+      position:absolute;
+       inset:0;
+       scale:1.5;
       display:block;
       cursor: grab;
+      z-index: 22;
       touch-action: none;
     }
     canvas#pyramidCanvas:active{cursor: grabbing;}
@@ -325,8 +383,6 @@
     .vignette{
       pointer-events:none;
       position:absolute; inset:0;
-      background: radial-gradient(circle at 50% 40%, rgba(0,0,0,0) 0 55%, rgba(0,0,0,.06) 85%, rgba(0,0,0,.10) 100%);
-      mix-blend-mode: multiply;
     }
 
     .palettePanel{
@@ -341,43 +397,103 @@
       font-size: 11px;
       letter-spacing: .12em;
       text-transform: uppercase;
-      font-weight: 800;
-      color: var(--muted);
+      font-weight: 900;
+      color: var(--ink);
     }
     .panelInput{
       padding: 10px 12px;
       border-radius: 14px;
       border: 1px solid var(--soft2);
       background: var(--surface-strong);
-      font-weight: 600;
+      font-weight: 700;
       color: var(--ink);
+      font-size: 14px;
     }
     .uploadBox{
-      border: 1px dashed var(--soft2);
-      border-radius: 16px;
-      padding: 12px;
-      display: grid;
+      border: 1px solid var(--soft2);
+      border-radius: 12px;
+      padding: 10px;
+      display: flex;
+      align-items: center;
       gap: 10px;
+      background: transparent;
+      min-height: 56px;
+    }
+    #logoInput{
+      display: none;
+    }
+    .uploadBtn{
+      border: 1px solid var(--soft2);
+      background: var(--surface-strong);
+      border-radius: 10px;
+      padding: 10px 14px;
+      cursor: pointer;
+      font-weight: 700;
+      color: var(--ink);
+      font-size: 14px;
+      transition: background 200ms ease, transform 200ms ease;
+      flex-grow: 1;
+      white-space: nowrap;
+    }
+    .uploadBtn:hover{
       background: var(--surface);
+      transform: translateY(-1px);
+    }
+    .uploadBtn.hidden{
+      display: none;
+    }
+    .imageContainer{
+      position: relative;
+      flex-shrink: 0;
+      display: none;
+    }
+    .imageContainer.visible{
+      display: block;
     }
     .logoPreview{
-      width: 64px;
-      height: 64px;
-      border-radius: 14px;
+      width: 56px;
+      height: 56px;
+      border-radius: 10px;
       border: 1px solid var(--soft2);
       object-fit: contain;
-      background: #fff;
+      background: var(--surface-strong);
+      cursor: pointer;
+      transition: opacity 200ms ease;
+    }
+    .logoPreview:hover{
+      opacity: 0.8;
+    }
+    .editOverlay{
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0,0,0,.4);
+      border-radius: 10px;
+      opacity: 0;
+      transition: opacity 200ms ease;
+    }
+    .imageContainer:hover .editOverlay{
+      opacity: 1;
+    }
+    .editIcon{
+      color: white;
+      font-size: 18px;
+      font-weight: bold;
     }
     .paletteRow{
       display:flex;
       gap: 8px;
       flex-wrap: wrap;
+      align-items: center;
     }
     .paletteSwatch{
       width: 22px;
       height: 22px;
       border-radius: 999px;
       border: 1px solid var(--soft2);
+      box-shadow: 0 2px 4px rgba(0,0,0,.06);
     }
     .presetDropdown{
       display:grid;
@@ -449,35 +565,84 @@
       border: 1px solid var(--soft2);
       background: var(--surface);
       box-shadow: var(--shadow2);
-      padding: 14px;
+      padding: 12px;
       text-align:left;
       cursor: pointer;
       display:flex;
       flex-direction:column;
       gap: 12px;
       transition: transform 220ms ease, box-shadow 220ms ease;
+      position: relative;
+      overflow: hidden; /* hide overflowing image when it scales */
+      --tx: 0px; --ty: 0px; --s: 1;
     }
-    .teamCard img{
-      width: 100%;
-      height: 260px;
+    .teamCard:hover{transform: translateY(-4px); box-shadow: 0 20px 48px rgba(0,0,0,.14);}
+
+    /* image is hidden by default; appears on hover covering the card */
+    .teamImageContainer{
+      position: absolute;
+      inset: 0;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      overflow:hidden;
+      border-radius: inherit;
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transition: opacity 300ms ease, visibility 300ms ease;
+      z-index: 3;
+    }
+    .teamCard:hover .teamImageContainer{
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+    }
+    .teamImageContainer img{
+      position: absolute;
+      left: 50%; top: 50%;
+      transform: translate(-50%, -50%) translate(var(--tx, 0px), var(--ty, 0px)) scale(var(--s, 1));
+      height: 140%;
+      width: auto;
       object-fit: cover;
-      border-radius: 16px;
-      display:block;
+      transition: transform 220ms ease, opacity 200ms ease;
+      will-change: transform, opacity;
     }
-    .teamCard h3{
-      margin: 0;
-      font-size: 22px;
-      font-weight: 900;
-      letter-spacing:-0.03em;
+    /* slightly larger on hover */
+    .teamCard:hover{ --s: 1.12 }
+
+    .teamInfo{
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+      align-items:flex-start;
+      transition: all 300ms ease;
+      position: relative;
+      z-index: 1; /* ensure text sits under the image when it appears */
+      background: transparent;
+      padding: 6px 0 0 0;
     }
-    .teamCard span{
-      font-weight: 800;
-      font-size: 13px;
-      letter-spacing: .08em;
+    .teamInfo .role{
+      font-weight:800;
+      font-size:13px;
+      letter-spacing:.08em;
       text-transform: uppercase;
       color: var(--muted);
     }
-    .teamCard:hover{transform: translateY(-2px); box-shadow: 0 16px 40px rgba(0,0,0,.12);}
+    .teamInfo .name{
+      margin:0;
+      font-size:18px;
+      font-weight:900;
+      letter-spacing:-0.02em;
+    }
+    .teamBio{
+      margin:0;
+      display:block;
+      color: var(--muted);
+      font-size:13px;
+      line-height:1.4;
+      text-transform: lowercase; /* small laters -> lowercase */
+    }
 
     .teamModal{
       position: fixed;
@@ -505,19 +670,39 @@
       cursor: pointer;
     }
     .teamModalContent{
-      width: min(960px, 92vw);
+      width: min(1100px, 96vw);
       max-height: 92vh;
-      display:grid;
+      display:flex;
       gap: 18px;
       color: var(--ink);
+      align-items: stretch;
+      padding: 18px;
     }
+    /* Modal image: default (portrait) layout */
     .teamModalImage{
       width: 100%;
-      height: min(72vh, 640px);
-      object-fit: cover;
-      border-radius: 22px;
-      box-shadow: 0 18px 50px rgba(0,0,0,.35);
+      height: auto;
+      max-height: 70vh;
+      object-fit: contain;
+      border-radius: 0;
+      box-shadow: none;
+      border: none;
+      background: transparent;
+      display:block;
     }
+
+    /* Wide images (image wider than tall): image on top, text below */
+    .teamModal.wide .teamModalContent{flex-direction: column;}
+    .teamModal.wide .teamModalImage{width:100%; max-height:70vh;}
+    .teamModal.wide .teamModalInfo{width:100%; padding-top: 12px;}
+
+    /* Tall images (image taller than wide): image on the right, text on the left */
+    .teamModal.tall .teamModalContent{flex-direction: row;}
+    .teamModal.tall .teamModalImage{width:48%; max-height:80vh; align-self:center; order:2}
+    .teamModal.tall .teamModalInfo{width:52%; padding-right:20px; align-self:center; order:1}
+
+    /* Remove any framing around modal image */
+    .teamModal .teamModalImage, .teamModal .teamModalImage img{border:0; border-radius:0; box-shadow:none}
     .teamModalInfo h3{
       margin: 0 0 6px;
       font-size: 30px;
@@ -541,6 +726,11 @@
       font-weight: 600;
     }
 
+    .grid2{
+      display:grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+    }
     .grid3{
       display:grid;
       grid-template-columns: repeat(3, 1fr);
@@ -559,7 +749,9 @@
     }
     .card.in{opacity:1; transform: translateY(0);}
     .card h3{margin: 0 0 8px; font-size: 16px; font-weight: 900; letter-spacing:-0.03em;}
-    .card p{margin: 0 0 12px; color: var(--muted); line-height: 1.55; font-weight: 600; font-size: 14px;}
+    .card h4{margin: 0 0 12px; font-size: 28px; font-weight: 400;}
+    .valueIcon{font-size: 32px; line-height: 1; margin: 0 0 8px;}
+    .card p{margin: 0 0 12px; color: var(--ink); line-height: 1.55; font-weight: 700; font-size: 14px;}
     .bullets{
       margin: 0;
       padding-left: 16px;
@@ -599,7 +791,7 @@
       font-weight: 900;
     }
     .problem strong{display:block; font-weight:900; letter-spacing:-0.02em}
-    .problem span{display:block; color: var(--muted); margin-top: 4px; font-weight: 600; line-height:1.45}
+    .problem span{display:block; color: var(--ink); margin-top: 4px; font-weight: 700; line-height:1.45}
 
     .timeline{
       border-radius: var(--radius2);
@@ -638,7 +830,7 @@
       font-weight:900;
     }
     .step h4{margin:0 0 6px; font-size: 15px; font-weight:900}
-    .step p{margin:0; color: var(--muted); font-weight:600; line-height:1.55; font-size: 14px}
+    .step p{margin:0; color: var(--ink); font-weight:700; line-height:1.55; font-size: 14px}
 
     .cta{
       border-radius: var(--radius2);
@@ -700,6 +892,7 @@
 
     @media (max-width: 920px){
       .heroGrid{grid-template-columns: 1fr; gap: 16px;}
+      .grid2{grid-template-columns: 1fr;}
       .grid3{grid-template-columns: 1fr;}
       .problems{grid-template-columns: 1fr;}
       .teamGrid{grid-template-columns: 1fr;}
@@ -732,7 +925,7 @@
       .navcta{flex-direction: column; gap: 8px;}
       .navcta .btn{width: 100%; justify-content: center;}
       .presetSelect{font-size: 14px;}
-      .teamCard img{height: 220px;}
+      .teamImageContainer img{height: 220px;}
       .teamModalImage{height: min(48vh, 420px);}
     }
 
@@ -750,7 +943,7 @@
       .brand img{width: 32px; height: 32px;}
       .timeline{margin: 0 -12px; border-radius: 0;}
       .teamGrid{grid-template-columns: 1fr;}
-      .teamCard img{height: 200px;}
+      .teamImageContainer img{height: 200px;}
     }
 
     .carousel {
